@@ -31,6 +31,6 @@ public class DeviceAddedService {
 
         String topic = topicResolver.resolve(event.getType());
         String key = event.getHubId();
-        producer.send(topic, key, wrapper);
+        producer.send(topic, wrapper.getTimestamp().toEpochMilli(), key, wrapper);
     }
 }

@@ -1,5 +1,7 @@
 package ru.yandex.practicum.config;
 
+import lombok.extern.slf4j.Slf4j;
+import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -9,20 +11,22 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.yandex.practicum.kafka.serializer.GeneralAvroSerializer;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @Configuration
 public class KafkaConfig implements DisposableBean {
     private final String bootstrapServers;
-    private KafkaProducer<String, Object> producer;
+    private KafkaProducer<String, SpecificRecordBase> producer;
 
     public KafkaConfig(@Value("${kafka.bootstrap-servers}") String bootstrapServers) {
         this.bootstrapServers = bootstrapServers;
     }
 
     @Bean
-    public KafkaProducer<String, Object> kafkaProducer() {
+    public KafkaProducer<String, SpecificRecordBase> kafkaProducer() {
         if (producer == null) {
             Map<String, Object> props = new HashMap<>();
             props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
@@ -35,15 +39,16 @@ public class KafkaConfig implements DisposableBean {
 
     @Override
     public void destroy() {
-        if (producer != null) {
-            try {
-                producer.flush();
-            } catch (Exception ignored) {
-            }
-            try {
-                producer.close();
-            } catch (Exception ignored) {
-            }
+        if (producer == null) return;
+        try {
+            producer.flush();
+        } catch (Exception exception) {
+            log.warn("Error flushing kafka producer", exception);
+        }
+        try {
+            producer.close(Duration.ofSeconds(10));
+        } catch (Exception exception) {
+            log.warn("Error closing kafka producer", exception);
         }
     }
 }
