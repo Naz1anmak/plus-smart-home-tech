@@ -2,8 +2,8 @@ package ru.yandex.practicum.model.sensor.strategy;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.model.sensor.SensorEvent;
-import ru.yandex.practicum.model.sensor.SensorEventType;
+import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
+import ru.yandex.practicum.mapper.grpc.sensor.SwitchSensorEventMapper;
 import ru.yandex.practicum.model.sensor.SwitchSensorEvent;
 import ru.yandex.practicum.service.SwitchService;
 
@@ -11,15 +11,16 @@ import ru.yandex.practicum.service.SwitchService;
 @RequiredArgsConstructor
 public class SwitchSensorEventHandler implements SensorEventHandler {
     private final SwitchService switchService;
+    private final SwitchSensorEventMapper mapper;
 
     @Override
-    public SensorEventType getType() {
-        return SensorEventType.SWITCH_SENSOR_EVENT;
+    public SensorEventProto.PayloadCase getMessageType() {
+        return SensorEventProto.PayloadCase.SWITCH_SENSOR;
     }
 
     @Override
-    public void handle(SensorEvent event) {
-        SwitchSensorEvent switchSensorEvent = (SwitchSensorEvent) event;
+    public void handle(SensorEventProto proto) {
+        SwitchSensorEvent switchSensorEvent = mapper.fromProto(proto);
         switchService.save(switchSensorEvent);
     }
 }

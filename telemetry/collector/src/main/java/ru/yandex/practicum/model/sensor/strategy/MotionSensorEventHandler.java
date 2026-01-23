@@ -2,24 +2,25 @@ package ru.yandex.practicum.model.sensor.strategy;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
+import ru.yandex.practicum.mapper.grpc.sensor.MotionSensorEventMapper;
 import ru.yandex.practicum.model.sensor.MotionSensorEvent;
-import ru.yandex.practicum.model.sensor.SensorEvent;
-import ru.yandex.practicum.model.sensor.SensorEventType;
 import ru.yandex.practicum.service.MotionService;
 
 @Component
 @RequiredArgsConstructor
 public class MotionSensorEventHandler implements SensorEventHandler {
     private final MotionService motionService;
+    private final MotionSensorEventMapper mapper;
 
     @Override
-    public SensorEventType getType() {
-        return SensorEventType.MOTION_SENSOR_EVENT;
+    public SensorEventProto.PayloadCase getMessageType() {
+        return SensorEventProto.PayloadCase.MOTION_SENSOR;
     }
 
     @Override
-    public void handle(SensorEvent event) {
-        MotionSensorEvent motionSensorEvent = (MotionSensorEvent) event;
+    public void handle(SensorEventProto proto) {
+        MotionSensorEvent motionSensorEvent = mapper.fromProto(proto);
         motionService.save(motionSensorEvent);
     }
 }
