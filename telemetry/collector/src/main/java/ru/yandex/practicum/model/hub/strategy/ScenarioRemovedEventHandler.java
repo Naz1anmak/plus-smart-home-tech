@@ -2,8 +2,8 @@ package ru.yandex.practicum.model.hub.strategy;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.model.hub.HubEvent;
-import ru.yandex.practicum.model.hub.HubEventType;
+import ru.yandex.practicum.grpc.telemetry.event.HubEventProto;
+import ru.yandex.practicum.mapper.grpc.hub.ScenarioRemovedEventMapper;
 import ru.yandex.practicum.model.hub.ScenarioRemovedEvent;
 import ru.yandex.practicum.service.ScenarioRemovedService;
 
@@ -11,15 +11,16 @@ import ru.yandex.practicum.service.ScenarioRemovedService;
 @RequiredArgsConstructor
 public class ScenarioRemovedEventHandler implements HubEventHandler {
     private final ScenarioRemovedService scenarioRemovedService;
+    private final ScenarioRemovedEventMapper mapper;
 
     @Override
-    public HubEventType getType() {
-        return HubEventType.SCENARIO_REMOVED;
+    public HubEventProto.PayloadCase getMessageType() {
+        return HubEventProto.PayloadCase.SCENARIO_REMOVED;
     }
 
     @Override
-    public void handle(HubEvent event) {
-        ScenarioRemovedEvent scenarioRemovedEvent = (ScenarioRemovedEvent) event;
+    public void handle(HubEventProto proto) {
+        ScenarioRemovedEvent scenarioRemovedEvent = mapper.fromProto(proto);
         scenarioRemovedService.save(scenarioRemovedEvent);
     }
 }

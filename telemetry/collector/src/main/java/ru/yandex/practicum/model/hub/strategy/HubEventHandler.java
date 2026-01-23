@@ -1,11 +1,10 @@
 package ru.yandex.practicum.model.hub.strategy;
 
-import ru.yandex.practicum.model.hub.HubEvent;
-import ru.yandex.practicum.model.hub.HubEventType;
+import ru.yandex.practicum.grpc.telemetry.event.HubEventProto;
 
 public interface HubEventHandler {
 
-    HubEventType getType();
+    HubEventProto.PayloadCase getMessageType();
 
-    void handle(HubEvent event);
+    void handle(HubEventProto event);
 }

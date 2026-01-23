@@ -15,7 +15,8 @@ public class ScenarioCondition {
     private String sensorId;
     private ScenarioConditionType type;
     private OperationType operation;
-    private int value;
+    private Boolean boolValue;
+    private Integer intValue;
 
     public static List<ScenarioConditionAvro> toAvroList(List<ScenarioCondition> list) {
         if (list == null || list.isEmpty()) return Collections.emptyList();
@@ -25,26 +26,19 @@ public class ScenarioCondition {
     }
 
     private ScenarioConditionAvro toAvro() {
-        return ScenarioConditionAvro.newBuilder()
+        ScenarioConditionAvro.Builder builder = ScenarioConditionAvro.newBuilder()
                 .setSensorId(this.sensorId)
                 .setType(ConditionTypeAvro.valueOf(this.type.name()))
-                .setOperation(ConditionOperationAvro.valueOf(this.operation.name()))
-                .setValue(this.value)
-                .build();
+                .setOperation(ConditionOperationAvro.valueOf(this.operation.name()));
+
+        if (boolValue != null) {
+            builder.setValue(boolValue);
+        } else if (intValue != null) {
+            builder.setValue(intValue);
+        } else {
+            builder.setValue(null);
+        }
+
+        return builder.build();
     }
-}
-
-enum ScenarioConditionType {
-    MOTION,
-    LUMINOSITY,
-    SWITCH,
-    TEMPERATURE,
-    CO2LEVEL,
-    HUMIDITY
-}
-
-enum OperationType {
-    EQUALS,
-    GREATER_THAN,
-    LOWER_THAN
 }
