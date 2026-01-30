@@ -17,11 +17,11 @@ import java.util.Map;
 
 @Slf4j
 @Configuration
-public class KafkaConfig implements DisposableBean {
+public class KafkaProducerConfig implements DisposableBean {
     private final String bootstrapServers;
     private KafkaProducer<String, SpecificRecordBase> producer;
 
-    public KafkaConfig(@Value("${kafka.bootstrap-servers}") String bootstrapServers) {
+    public KafkaProducerConfig(@Value("${kafka.producer.bootstrap-servers}") String bootstrapServers) {
         this.bootstrapServers = bootstrapServers;
     }
 
@@ -29,9 +29,11 @@ public class KafkaConfig implements DisposableBean {
     public KafkaProducer<String, SpecificRecordBase> kafkaProducer() {
         if (producer == null) {
             Map<String, Object> props = new HashMap<>();
+
             props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
             props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
             props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, GeneralAvroSerializer.class);
+
             producer = new KafkaProducer<>(props);
         }
         return producer;
@@ -43,12 +45,12 @@ public class KafkaConfig implements DisposableBean {
         try {
             producer.flush();
         } catch (Exception exception) {
-            log.warn("Error flushing kafka producer", exception);
+            log.warn("Ошибка при flush kafka producer", exception);
         }
         try {
             producer.close(Duration.ofSeconds(10));
         } catch (Exception exception) {
-            log.warn("Error closing kafka producer", exception);
+            log.warn("Ошибка при закрытии kafka producer", exception);
         }
     }
 }
