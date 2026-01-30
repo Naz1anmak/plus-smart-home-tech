@@ -23,7 +23,7 @@ public class KafkaEventProducer {
         CompletableFuture<RecordMetadata> future = new CompletableFuture<>();
         producer.send(record, (md, ex) -> {
             if (ex != null) {
-                log.error("Error sending record to topic {}", topic, ex);
+                log.error("Ошибка при отправке данных в топик {}: {}", topic, ex.getMessage());
                 future.completeExceptionally(ex);
             } else {
                 future.complete(md);
