@@ -10,8 +10,8 @@ import ru.yandex.practicum.exception.HandlerNotFoundException;
 import ru.yandex.practicum.grpc.telemetry.collector.CollectorControllerGrpc;
 import ru.yandex.practicum.grpc.telemetry.event.HubEventProto;
 import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
-import ru.yandex.practicum.model.hub.strategy.HubEventHandler;
-import ru.yandex.practicum.model.sensor.strategy.SensorEventHandler;
+import ru.yandex.practicum.handler.hub.HubEventHandler;
+import ru.yandex.practicum.handler.sensor.SensorEventHandler;
 
 import java.util.Map;
 import java.util.Set;

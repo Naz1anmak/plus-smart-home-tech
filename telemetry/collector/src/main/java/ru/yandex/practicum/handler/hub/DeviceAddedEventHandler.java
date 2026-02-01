@@ -1,4 +1,4 @@
-package ru.yandex.practicum.model.hub.strategy;
+package ru.yandex.practicum.handler.hub;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

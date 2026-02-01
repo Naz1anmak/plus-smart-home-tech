@@ -1,4 +1,4 @@
-package ru.yandex.practicum.model.sensor.strategy;
+package ru.yandex.practicum.handler.sensor;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
