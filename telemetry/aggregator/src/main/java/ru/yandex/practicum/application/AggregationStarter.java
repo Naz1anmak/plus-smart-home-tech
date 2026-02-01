@@ -11,6 +11,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.errors.WakeupException;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.config.KafkaConsumerProperties;
+import ru.yandex.practicum.config.KafkaProducerProperties;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
 import ru.yandex.practicum.kafka.telemetry.event.SensorsSnapshotAvro;
 import ru.yandex.practicum.service.SensorsSnapshotService;
@@ -26,17 +27,18 @@ public class AggregationStarter {
     private final KafkaProducer<String, SpecificRecordBase> producer;
     private final KafkaConsumer<String, SensorEventAvro> consumer;
     private final SensorsSnapshotService sensorsSnapshotService;
-    private final KafkaConsumerProperties properties;
+    private final KafkaConsumerProperties consumerProps;
+    private final KafkaProducerProperties producerProps;
 
     public void start() {
         Runtime.getRuntime().addShutdownHook(new Thread(consumer::wakeup));
 
         try {
-            consumer.subscribe(List.of(properties.getTopics().getSensors()));
+            consumer.subscribe(List.of(consumerProps.getTopics().getSensors()));
 
             while (true) {
                 ConsumerRecords<String, SensorEventAvro> records = consumer.poll(
-                        Duration.ofMillis(properties.getPollTimeoutMs())
+                        Duration.ofMillis(consumerProps.getPollTimeoutMs())
                 );
 
                 for (ConsumerRecord<String, SensorEventAvro> record : records) {
@@ -45,11 +47,11 @@ public class AggregationStarter {
 
                     Optional<SensorsSnapshotAvro> snapshot = sensorsSnapshotService.updateState(record.value());
 
-                    snapshot.ifPresent(s -> producer.send(
+                    snapshot.ifPresent(snapshotAvro -> producer.send(
                             new ProducerRecord<>(
-                                    "telemetry.snapshots.v1",
-                                    s.getHubId(),
-                                    s
+                                    producerProps.getTopics().getSnapshots(),
+                                    snapshotAvro.getHubId(),
+                                    snapshotAvro
                             )
                     ));
                 }

@@ -8,17 +8,14 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @Component
-@ConfigurationProperties(prefix = "kafka.consumer")
-public class KafkaConsumerProperties {
+@ConfigurationProperties(prefix = "kafka.producer")
+public class KafkaProducerProperties {
     private String bootstrapServers;
-    private boolean enableAutoCommit;
-    private int pollTimeoutMs;
-    private String groupId;
     private Topics topics;
 
     @Getter
     @Setter
     public static class Topics {
-        private String sensors;
+        private String snapshots;
     }
 }
