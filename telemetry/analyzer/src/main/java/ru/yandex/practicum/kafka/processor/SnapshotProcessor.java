@@ -37,16 +37,16 @@ public class SnapshotProcessor implements Runnable {
                 );
 
                 for (ConsumerRecord<String, SensorsSnapshotAvro> record : records) {
-                    log.info("Получено событие от датчика: ключ = {}, значение = {}, раздел = {}, смещение = {}",
+                    log.info("Получен снепшот состояния датчиков: ключ = {}, значение = {}, раздел = {}, смещение = {}",
                             record.key(), record.value(), record.partition(), record.offset());
                     scenarioExecutionService.process(record.value());
                 }
                 consumer.commitAsync();
             }
-        } catch (WakeupException ignored) {
-            // shutdown
+        } catch (WakeupException exception) {
+            log.info("Получен сигнал завершения работы, останавливаем процессор снепшотов");
         } catch (Exception exception) {
-            log.error("Ошибка во время обработки событий от датчиков", exception);
+            log.error("Ошибка во время обработки снепшотов", exception);
         } finally {
             try {
                 consumer.commitSync();

@@ -20,7 +20,7 @@ public class SensorService {
 
     @Transactional
     public void addSensor(String hubId, String sensorId) {
-        sensorReadService.existsByIdInAndHubId(List.of(sensorId), hubId);
+        sensorReadService.throwIfExists(List.of(sensorId), hubId);
         Sensor sensor = mapper.fromAvro(hubId, sensorId);
         sensorRepository.save(sensor);
         log.info("Датчик с id={} добавлен", sensor.getId());

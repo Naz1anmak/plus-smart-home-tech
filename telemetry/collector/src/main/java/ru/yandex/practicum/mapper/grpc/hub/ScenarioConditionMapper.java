@@ -48,6 +48,7 @@ public class ScenarioConditionMapper {
             case BOOL_VALUE -> condition.setBoolValue(proto.getBoolValue());
             case INT_VALUE -> condition.setIntValue(proto.getIntValue());
             case VALUE_NOT_SET -> {
+                // Значение в условии не задано, намеренно не устанавливаем поле в доменной модели
             }
         }
     }

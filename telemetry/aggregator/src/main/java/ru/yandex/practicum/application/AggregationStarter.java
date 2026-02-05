@@ -57,8 +57,8 @@ public class AggregationStarter {
                 }
                 consumer.commitAsync();
             }
-        } catch (WakeupException ignored) {
-            // shutdown
+        } catch (WakeupException exception) {
+            log.info("Получен сигнал завершения работы, останавливаем процессор событий от датчиков");
         } catch (Exception exception) {
             log.error("Ошибка во время обработки событий от датчиков", exception);
         } finally {

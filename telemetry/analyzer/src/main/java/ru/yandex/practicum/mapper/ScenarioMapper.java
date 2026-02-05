@@ -33,5 +33,3 @@ public class ScenarioMapper {
         return scenario;
     }
 }
-
-

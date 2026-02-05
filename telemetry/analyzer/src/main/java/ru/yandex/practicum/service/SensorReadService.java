@@ -18,7 +18,7 @@ public class SensorReadService {
     private final SensorRepository sensorRepository;
 
     @Transactional(readOnly = true)
-    public void existsByIdInAndHubId(Collection<String> ids, String hubId) {
+    public void throwIfExists(Collection<String> ids, String hubId) {
         if (sensorRepository.existsByIdInAndHubId(ids, hubId)) {
             log.error("Один из датчиков с id={} уже существует в хабе id={}", ids, hubId);
             throw new ConflictException("Один из датчиков с id=" + ids + " уже существует в хабе id=" + hubId);

@@ -37,16 +37,16 @@ public class HubEventProcessor implements Runnable {
                 );
 
                 for (ConsumerRecord<String, HubEventAvro> record : records) {
-                    log.info("Получено событие от датчика: ключ = {}, значение = {}, раздел = {}, смещение = {}",
+                    log.info("Получено событие от хаба: ключ = {}, значение = {}, раздел = {}, смещение = {}",
                             record.key(), record.value(), record.partition(), record.offset());
                     dispatcher.dispatch(record.value());
                 }
                 consumer.commitAsync();
             }
-        } catch (WakeupException ignored) {
-            // shutdown
+        } catch (WakeupException exception) {
+            log.info("Получен сигнал завершения работы, останавливаем процессор событий от хаба");
         } catch (Exception exception) {
-            log.error("Ошибка во время обработки событий от датчиков", exception);
+            log.error("Ошибка во время обработки событий от хаба", exception);
         } finally {
             try {
                 consumer.commitSync();

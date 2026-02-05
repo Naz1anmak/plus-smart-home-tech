@@ -13,7 +13,7 @@ public class ActionMapper {
     public Action fromAvro(DeviceActionAvro avro) {
         Action action = new Action();
         action.setType(actionTypeMapper.fromAvro(avro.getType()));
-        action.setValue(action.getValue());
+        action.setValue(avro.getValue());
         return action;
     }
 }

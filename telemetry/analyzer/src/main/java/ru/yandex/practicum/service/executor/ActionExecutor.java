@@ -21,13 +21,14 @@ public class ActionExecutor {
     private HubRouterControllerGrpc.HubRouterControllerBlockingStub hubRouterClient;
 
     public void executeAction(String hubId, String scenarioName, DeviceActionProto action) {
+        Instant now = Instant.now();
         DeviceActionRequest request = DeviceActionRequest.newBuilder()
                 .setHubId(hubId)
                 .setScenarioName(scenarioName)
                 .setAction(action)
                 .setTimestamp(Timestamp.newBuilder()
-                        .setSeconds(Instant.now().getEpochSecond())
-                        .setNanos(Instant.now().getNano())
+                        .setSeconds(now.getEpochSecond())
+                        .setNanos(now.getNano())
                         .build())
                 .build();
 

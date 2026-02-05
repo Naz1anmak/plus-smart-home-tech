@@ -23,7 +23,7 @@ public class ScenarioExecutionService {
     private final ConditionEvaluator conditionEvaluator;
     private final ActionExecutor actionExecutor;
 
-    @Transactional(readOnly = true)
+    @Transactional
     public void process(SensorsSnapshotAvro snapshot) {
         String hubId = snapshot.getHubId();
 
