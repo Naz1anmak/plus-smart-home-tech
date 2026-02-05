@@ -22,11 +22,12 @@ public class KafkaConsumerConfig {
         Map<String, Object> config = new HashMap<>();
 
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, props.getBootstrapServers());
-        config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, SensorEventDeserializer.class);
-        config.put(ConsumerConfig.GROUP_ID_CONFIG, props.getGroupId());
         config.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, props.isEnableAutoCommit());
         config.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, props.getPollTimeoutMs());
+
+        config.put(ConsumerConfig.GROUP_ID_CONFIG, props.getGroupId());
+        config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, SensorEventDeserializer.class);
 
         return new KafkaConsumer<>(config);
     }

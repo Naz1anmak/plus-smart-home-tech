@@ -1,4 +1,4 @@
-package ru.yandex.practicum.config;
+package ru.yandex.practicum.kafka.config;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,12 +13,20 @@ public class KafkaConsumerProperties {
     private String bootstrapServers;
     private boolean enableAutoCommit;
     private int pollTimeoutMs;
-    private String groupId;
+    private Groups groups;
     private Topics topics;
 
     @Getter
     @Setter
+    public static class Groups {
+        private String hubEvents;
+        private String snapshots;
+    }
+
+    @Getter
+    @Setter
     public static class Topics {
-        private String sensors;
+        private String hubEvents;
+        private String snapshots;
     }
 }

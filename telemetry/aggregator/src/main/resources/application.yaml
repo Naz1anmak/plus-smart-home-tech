@@ -5,12 +5,13 @@ spring:
 kafka:
   producer:
     bootstrap-servers: localhost:9092
+    topics:
+      snapshots: telemetry.snapshots.v1
 
   consumer:
     bootstrap-servers: localhost:9092
-    group-id: telemetry.aggregator.sensors
     enable-auto-commit: false
     poll-timeout-ms: 100
-
+    group-id: telemetry.aggregator.sensors
     topics:
       sensors: telemetry.sensors.v1
