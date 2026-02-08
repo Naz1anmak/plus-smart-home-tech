@@ -1,0 +1,53 @@
+package ru.yandex.practicum.config;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.avro.specific.SpecificRecordBase;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import ru.yandex.practicum.kafka.serializer.GeneralAvroSerializer;
+
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
+
+@Slf4j
+@Configuration
+@RequiredArgsConstructor
+public class KafkaProducerConfig implements DisposableBean {
+    private final KafkaProducerProperties producerProps;
+    private KafkaProducer<String, SpecificRecordBase> producer;
+
+    @Bean
+    public KafkaProducer<String, SpecificRecordBase> kafkaProducer() {
+        if (producer == null) {
+            Map<String, Object> props = new HashMap<>();
+
+            props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, producerProps.getBootstrapServers());
+            props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+            props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, GeneralAvroSerializer.class);
+
+            producer = new KafkaProducer<>(props);
+        }
+        return producer;
+    }
+
+    @Override
+    public void destroy() {
+        if (producer == null) return;
+        try {
+            producer.flush();
+        } catch (Exception exception) {
+            log.warn("Ошибка при flush kafka producer", exception);
+        }
+        try {
+            producer.close(Duration.ofSeconds(10));
+        } catch (Exception exception) {
+            log.warn("Ошибка при закрытии kafka producer", exception);
+        }
+    }
+}

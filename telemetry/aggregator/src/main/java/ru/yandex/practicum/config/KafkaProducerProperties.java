@@ -1,0 +1,21 @@
+package ru.yandex.practicum.config;
+
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+
+@Getter
+@Setter
+@Component
+@ConfigurationProperties(prefix = "kafka.producer")
+public class KafkaProducerProperties {
+    private String bootstrapServers;
+    private Topics topics;
+
+    @Getter
+    @Setter
+    public static class Topics {
+        private String snapshots;
+    }
+}

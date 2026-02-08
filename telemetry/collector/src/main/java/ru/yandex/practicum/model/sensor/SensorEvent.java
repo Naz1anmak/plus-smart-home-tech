@@ -27,12 +27,15 @@ import java.time.Instant;
         @JsonSubTypes.Type(value = TemperatureSensorEvent.class, name = "TEMPERATURE_SENSOR_EVENT")
 })
 public abstract class SensorEvent {
-    @NotBlank
+    @NotBlank(message = "id не может быть пустым")
     private String id;
-    @NotBlank
-    private String hubId;
-    private Instant timestamp = Instant.now();
 
-    @NotNull
+    @NotBlank(message = "hubId не может быть пустым")
+    private String hubId;
+
+    @NotNull(message = "timestamp не может быть пустым")
+    private Instant timestamp;
+
+    @NotNull(message = "type не может быть пустым")
     public abstract SensorEventType getType();
 }

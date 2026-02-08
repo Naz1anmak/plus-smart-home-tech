@@ -2,6 +2,7 @@ package ru.yandex.practicum.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.exception.TypeNotFoundException;
 
 @Component
 @RequiredArgsConstructor
@@ -12,7 +13,7 @@ public class TopicResolver {
         String key = eventType.name();
         String topic = props.getMapping().get(key);
         if (topic == null) {
-            throw new IllegalArgumentException("No topic mapping found for event type: " + key);
+            throw new TypeNotFoundException("Неизвестный тип события: " + key);
         }
         return topic;
     }
