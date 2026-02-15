@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.2</version>
+        <version>3.4.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -23,6 +23,7 @@
 
     <properties>
         <java.version>21</java.version>
+        <spring-cloud-dependencies.version>2024.0.0</spring-cloud-dependencies.version>
 
         <avro.version>1.11.3</avro.version>
         <kafka-clients.version>3.6.1</kafka-clients.version>
@@ -81,6 +82,14 @@
                 <version>${grpc.version}</version>
             </dependency>
             <!--    / GRPC dependencies management        -->
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
