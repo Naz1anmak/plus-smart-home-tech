@@ -42,5 +42,5 @@ services:
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: mydatabase
+      POSTGRES_DB: telemetryDB
       DB_HOST: localhost

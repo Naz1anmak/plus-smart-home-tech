@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: collector
+
+grpc:
+  server:
+    port: 59091
+
+kafka:
+  bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+  topics:
+    sensors: telemetry.sensors.v1
+    hubs: telemetry.hubs.v1
+    mapping:
+      CLIMATE_SENSOR_EVENT: telemetry.sensors.v1
+      LIGHT_SENSOR_EVENT: telemetry.sensors.v1
+      MOTION_SENSOR_EVENT: telemetry.sensors.v1
+      SWITCH_SENSOR_EVENT: telemetry.sensors.v1
+      TEMPERATURE_SENSOR_EVENT: telemetry.sensors.v1
+      DEVICE_ADDED: telemetry.hubs.v1
+      DEVICE_REMOVED: telemetry.hubs.v1
+      SCENARIO_ADDED: telemetry.hubs.v1
+      SCENARIO_REMOVED: telemetry.hubs.v1
