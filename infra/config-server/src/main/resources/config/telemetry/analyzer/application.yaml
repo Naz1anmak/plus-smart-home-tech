@@ -25,6 +25,8 @@ kafka:
       snapshots: telemetry.snapshots.v1
 
 grpc:
+  server:
+    port: 59092
   client:
     hub-router:
       address: 'static://localhost:59090'
