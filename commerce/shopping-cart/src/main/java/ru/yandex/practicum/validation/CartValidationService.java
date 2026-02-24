@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.dto.shoppingCart.response.ShoppingCartDto;
 import ru.yandex.practicum.exception.StateCartsException;
 import ru.yandex.practicum.exception.WarehouseUnavailableException;
-import ru.yandex.practicum.feignClient.WarehouseClient;
+import ru.yandex.practicum.feign.client.WarehouseClient;
 import ru.yandex.practicum.model.CartState;
 
 import java.util.Map;

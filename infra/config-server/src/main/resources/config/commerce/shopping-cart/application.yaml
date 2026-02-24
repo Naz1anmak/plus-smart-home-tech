@@ -13,6 +13,11 @@ spring:
       ddl-auto: update
     open-in-view: false
 
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+
 server:
   port: ${CART_PORT:0}
 
@@ -35,11 +40,6 @@ resilience4j:
         ignoreExceptions:
           - ru.yandex.practicum.exception.BadRequestException
           - ru.yandex.practicum.exception.NotFoundException
-          - ru.yandex.practicum.exception.WarehouseUnavailableException
-
-logging:
-  level:
-    io.github.resilience4j: INFO
 
 management:
   endpoints:
@@ -49,3 +49,10 @@ management:
   endpoint:
     health:
       show-details: always
+
+logging:
+  level:
+    io.github.resilience4j: INFO
+
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%X{requestId}] %-5level %logger{36} - %msg%n"

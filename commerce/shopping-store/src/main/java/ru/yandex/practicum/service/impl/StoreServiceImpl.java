@@ -19,7 +19,6 @@ import ru.yandex.practicum.repository.StoreRepository;
 import ru.yandex.practicum.service.StoreService;
 import ru.yandex.practicum.util.PageValidator;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -84,13 +83,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     @Transactional
     public boolean removeProductFromStore(UUID productId) {
-        Optional<Product> productOpt = storeReadService.findProductById(productId);
-        if (productOpt.isEmpty()) {
-            log.warn("Продукт с ID: {} не найден", productId);
-            return false;
-        }
-
-        Product product = productOpt.get();
+        Product product = storeReadService.getProductById(productId);
         product.setProductState(ProductState.DEACTIVATE);
         storeRepository.save(product);
         log.info("Продукт с ID: {} удален из ассортимента", productId);

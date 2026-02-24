@@ -1,4 +1,4 @@
-package ru.yandex.practicum.feignClient;
+package ru.yandex.practicum.feign.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import ru.yandex.practicum.api.StoreOperations;

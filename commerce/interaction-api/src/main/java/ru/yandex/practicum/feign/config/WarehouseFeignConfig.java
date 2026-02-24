@@ -1,9 +1,11 @@
-package ru.yandex.practicum.config;
+package ru.yandex.practicum.feign.config;
 
 import feign.codec.ErrorDecoder;
 import org.springframework.context.annotation.Bean;
-import ru.yandex.practicum.feign.WarehouseErrorDecoder;
+import org.springframework.context.annotation.Configuration;
+import ru.yandex.practicum.feign.decoder.WarehouseErrorDecoder;
 
+@Configuration
 public class WarehouseFeignConfig {
 
     @Bean

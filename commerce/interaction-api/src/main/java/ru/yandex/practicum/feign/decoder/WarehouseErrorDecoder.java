@@ -1,4 +1,4 @@
-package ru.yandex.practicum.feign;
+package ru.yandex.practicum.feign.decoder;
 
 import feign.Response;
 import feign.codec.ErrorDecoder;
@@ -11,14 +11,14 @@ public class WarehouseErrorDecoder implements ErrorDecoder {
     @Override
     public Exception decode(String methodKey, Response response) {
         int status = response.status();
+
         if (status >= 400 && status < 500) {
             if (status == 404) {
                 return new NotFoundException("Ресурс не найден при вызове: " + methodKey);
             }
-            return new BadRequestException(
-                    "Ошибка клиента при вызове: " + methodKey + " со статусом: " + status
-            );
+            return new BadRequestException("Ошибка клиента при вызове: " + methodKey + " со статусом: " + status);
         }
+
         return defaultDecoder.decode(methodKey, response);
     }
 }

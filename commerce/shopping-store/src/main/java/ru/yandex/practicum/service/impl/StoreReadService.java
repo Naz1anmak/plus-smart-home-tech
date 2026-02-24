@@ -11,7 +11,6 @@ import ru.yandex.practicum.exception.NotFoundException;
 import ru.yandex.practicum.model.Product;
 import ru.yandex.practicum.repository.StoreRepository;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -31,11 +30,7 @@ public class StoreReadService {
 
     @Transactional(readOnly = true)
     public Page<Product> getProductsByCategory(ProductCategory category, Pageable pageable) {
+        log.debug("Получаем активные товары по категории {}", category);
         return storeRepository.findByProductCategory(category, pageable);
-    }
-
-    @Transactional(readOnly = true)
-    public Optional<Product> findProductById(UUID productId) {
-        return storeRepository.findById(productId);
     }
 }
