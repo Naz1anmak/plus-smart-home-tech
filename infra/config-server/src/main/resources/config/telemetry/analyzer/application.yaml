@@ -3,9 +3,10 @@ spring:
     name: analyzer
 
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/telemetryDB}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:telemetryDB}
     username: ${DB_USERNAME:user}
     password: ${DB_PASSWORD:password}
+    driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
