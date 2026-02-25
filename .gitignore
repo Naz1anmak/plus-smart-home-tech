@@ -125,3 +125,8 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+#Document files
+shopping-store.json
+shopping-cart.json
+warehouse.json

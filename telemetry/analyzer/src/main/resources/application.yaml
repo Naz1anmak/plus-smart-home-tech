@@ -2,32 +2,22 @@ spring:
   application:
     name: analyzer
 
-  datasource:
-    url: jdbc:postgresql://localhost:5432/mydatabase
-    username: user
-    password: password
+  config:
+    import: "configserver:"
 
-  jpa:
-    hibernate:
-      ddl-auto: update
-    open-in-view: false
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+      fail-fast: true
+      retry:
+        use-random-policy: true
+        initial-interval: 2000
+        max-interval: 10000
+        max-attempts: 10
 
-kafka:
-  consumer:
-    bootstrap-servers: localhost:9092
-    enable-auto-commit: false
-    poll-timeout-ms: 100
-    groups:
-      hub-events: analyzer-hub-events
-      snapshots: analyzer-snapshots
-    topics:
-      hub-events: telemetry.hubs.v1
-      snapshots: telemetry.snapshots.v1
-
-grpc:
+eureka:
   client:
-    hub-router:
-      address: 'static://localhost:59090'
-      enableKeepAlive: true
-      keepAliveWithoutCalls: true
-      negotiationType: plaintext
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}

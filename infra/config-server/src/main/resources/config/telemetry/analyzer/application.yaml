@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: analyzer
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:telemetryDB}
+    username: ${DB_USERNAME:user}
+    password: ${DB_PASSWORD:password}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+
+kafka:
+  consumer:
+    bootstrap-servers: localhost:9092
+    enable-auto-commit: false
+    poll-timeout-ms: 100
+    groups:
+      hub-events: analyzer-hub-events
+      snapshots: analyzer-snapshots
+    topics:
+      hub-events: telemetry.hubs.v1
+      snapshots: telemetry.snapshots.v1
+
+grpc:
+  server:
+    port: 59092
+  client:
+    hub-router:
+      address: 'static://localhost:59090'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always

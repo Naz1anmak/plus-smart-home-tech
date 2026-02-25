@@ -42,5 +42,35 @@ services:
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: mydatabase
+      POSTGRES_DB: telemetryDB
       DB_HOST: localhost
+
+  store-db:
+    image: postgres:16.1
+    container_name: store_db
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: storeDB
+
+  cart-db:
+    image: postgres:16.1
+    container_name: cart_db
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: cartDB
+
+  warehouse-db:
+    image: postgres:16.1
+    container_name: warehouse_db
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: warehouseDB

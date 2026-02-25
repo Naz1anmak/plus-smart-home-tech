@@ -2,16 +2,22 @@ spring:
   application:
     name: aggregator
 
-kafka:
-  producer:
-    bootstrap-servers: localhost:9092
-    topics:
-      snapshots: telemetry.snapshots.v1
+  config:
+    import: "configserver:"
 
-  consumer:
-    bootstrap-servers: localhost:9092
-    enable-auto-commit: false
-    poll-timeout-ms: 100
-    group-id: telemetry.aggregator.sensors
-    topics:
-      sensors: telemetry.sensors.v1
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+      fail-fast: true
+      retry:
+        use-random-policy: true
+        initial-interval: 2000
+        max-interval: 10000
+        max-attempts: 10
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}
